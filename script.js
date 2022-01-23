@@ -76,6 +76,7 @@ class App {
   #map;
   #mapEvent;
   #workouts = [];
+  #selectedWorkout;
   constructor() {
     this._getPosition();
     this._getLocalStorage();
@@ -336,17 +337,32 @@ class App {
     if (!e.target.classList.contains('workout__edit')) return;
     const workoutEl = e.target.closest('.workout');
     console.log(workoutEl);
-    const selectedWorkout = this.#workouts.find(
+    this.#selectedWorkout = this.#workouts.find(
       work => work.id === workoutEl.dataset.id
     );
 
     this._showEditForm();
-    this._showCurrentValues(selectedWorkout);
-    console.log(selectedWorkout);
+    this._showCurrentValues(this.#selectedWorkout);
+    console.log(this.#selectedWorkout);
   }
 
   _submitNewWorkout(e) {
     e.preventDefault();
+    const type = editInputType.value;
+    const distance = +editInputDistance.value;
+    const duration = +editInputDuration.value;
+
+    if (type === 'running') {
+      const cadence = +editInputCadence.value;
+
+      // validation inputs
+      if (!this._formValidation(duration, distance, cadence)) {
+        alert('wrong inputs');
+        return;
+      }
+
+      console.log(this.#selectedWorkout);
+    }
   }
 
   _showEditForm() {
@@ -358,13 +374,14 @@ class App {
     editInputDistance.value = work.distance;
     editInputDuration.value = work.duration;
 
-    work.type === 'running'
-      ? this._toggleElevationFiledEdit()(
-          (editInputCadence.value = work.cadence)
-        )
-      : this._toggleCadenceFiledEdit()(
-          (editInputElevation.value = work.elevation)
-        );
+    if (work.type === 'running') {
+      this._toggleElevationFiledEdit();
+      editInputCadence.value = work.cadence;
+    }
+    if (work.type === 'cycling') {
+      this._toggleCadenceFiledEdit();
+      editInputElevation.value = work.elevation;
+    }
   }
 
   //   editForm.classList.remove('hidden');

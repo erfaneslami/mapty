@@ -181,7 +181,8 @@ a:visited {
   background-color: #fff;
 }
 
-.form__btn {
+.form__btn,
+.edit_form__btn {
   display: none;
 }
 

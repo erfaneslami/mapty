@@ -12,15 +12,17 @@ const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
 const editForm = document.querySelector('.edit_form');
-const inputType = document.querySelector('.edit_form__input--type');
-const inputDistance = document.querySelector('.edit_form__input--distance');
-const inputDuration = document.querySelector('.edit_form__input--duration');
-const inputCadence = document.querySelector('.edit_form__input--cadence');
-const inputElevation = document.querySelector('.edit_form__input--elevation');
+const editInputType = document.querySelector('.edit_form__input--type');
+const editInputDistance = document.querySelector('.edit_form__input--distance');
+const editInputDuration = document.querySelector('.edit_form__input--duration');
+const editInputCadence = document.querySelector('.edit_form__input--cadence');
+const editInputElevation = document.querySelector(
+  '.edit_form__input--elevation'
+);
 
 class Workout {
   date = new Date();
-  id = (new Date().getTime() + ' ').slice(-8);
+  id = (Math.random() * 10 + ' ').slice(-8);
 
   constructor(distance, duration, coords) {
     this.distance = distance;
@@ -81,8 +83,9 @@ class App {
     // EVENT HANDLERS
     inputType.addEventListener('change', this._toggleElevationFiled);
     form.addEventListener('submit', this._newWorkout.bind(this));
+    editForm.addEventListener('submit', this._submitNewWorkout.bind(this));
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
-    // containerWorkouts.addEventListener('click', this._editWorkout.bind(this));
+    containerWorkouts.addEventListener('click', this._editWorkout.bind(this));
   }
 
   _getPosition() {
@@ -122,6 +125,24 @@ class App {
   _toggleElevationFiled() {
     inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
     inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+  }
+
+  _toggleElevationFiledEdit() {
+    editInputElevation
+      .closest('.form__row')
+      .classList.add('edit_form__row--hidden');
+    editInputCadence
+      .closest('.form__row')
+      .classList.remove('edit_form__row--hidden');
+  }
+
+  _toggleCadenceFiledEdit() {
+    editInputElevation
+      .closest('.form__row')
+      .classList.remove('edit_form__row--hidden');
+    editInputCadence
+      .closest('.form__row')
+      .classList.add('edit_form__row--hidden');
   }
 
   _newWorkout(e) {
@@ -271,14 +292,16 @@ class App {
 
     // make new Objects from data of localStorage
     data.forEach(work => {
-      if (work.type === 'running')
+      if (work.type === 'running') {
         this.#workouts.push(
           new Running(work.distance, work.duration, work.coords, work.cadence)
         );
-      if (work.type === 'cycling')
+      }
+      if (work.type === 'cycling') {
         this.#workouts.push(
           new Cycling(work.distance, work.duration, work.coords, work.elevation)
         );
+      }
     });
 
     this.#workouts.forEach(workout => {
@@ -307,16 +330,41 @@ class App {
     location.reload();
   }
 
-  // _editWorkout(e) {
-  //   // delete selected workout
-  //   // alert (select on map)
-  //   //
-  //   if (!e.target.classList.contains('workout__edit')) return;
-  //   const workoutEl = e.target.closest('.workout');
-  //   console.log(workoutEl);
-  //   const selectedWorkout = this.#workouts.find(
-  //     work => work.id === workoutEl.dataset.id
-  //   );
+  _editWorkout(e) {
+    //   // delete selected workout
+    //   // alert (select on map)
+    //   //
+    if (!e.target.classList.contains('workout__edit')) return;
+    const workoutEl = e.target.closest('.workout');
+    console.log(workoutEl);
+    const selectedWorkout = this.#workouts.find(
+      work => work.id === workoutEl.dataset.id
+    );
+
+    this._showEditForm();
+    this._showCurrentValues(selectedWorkout);
+    console.log(selectedWorkout);
+  }
+
+  _submitNewWorkout(e) {}
+
+  _showEditForm() {
+    editForm.classList.remove('hidden');
+  }
+
+  _showCurrentValues(work) {
+    editInputType.value = work.type;
+    editInputDistance.value = work.distance;
+    editInputDuration.value = work.duration;
+
+    work.type === 'running'
+      ? this._toggleElevationFiledEdit()(
+          (editInputCadence.value = work.cadence)
+        )
+      : this._toggleCadenceFiledEdit()(
+          (editInputElevation.value = work.elevation)
+        );
+  }
 
   //   editForm.classList.remove('hidden');
   //   inputDistance.focus();

@@ -411,6 +411,13 @@ class App {
       }
     });
     workEl.remove();
+
+    this._hideEditForm();
+    this._setLocalStorage();
+  }
+
+  _hideEditForm() {
+    editForm.classList.add('hidden');
   }
 
   _showEditForm() {
@@ -431,23 +438,6 @@ class App {
       editInputElevation.value = work.elevation;
     }
   }
-
-  //   editForm.classList.remove('hidden');
-  //   inputDistance.focus();
-
-  //   editForm.addEventListener('submit', e => {
-  //     e.preventDefault();
-  //     console.log(selectedWorkout);
-  //     selectedWorkout.duration = inputDuration.value;
-  //     selectedWorkout._calcPace();
-
-  //     this.#workouts.forEach(work => {
-  //       this._renderWorkoutList(work);
-  //     });
-
-  //     console.log(selectedWorkout.coords);
-  //   });
-  // }
 }
 
 const app = new App();

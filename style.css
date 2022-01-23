@@ -154,7 +154,8 @@ a:visited {
   align-items: center;
 }
 
-.form__row--hidden {
+.form__row--hidden,
+.edit_form__row--hidden {
   display: none;
 }
 

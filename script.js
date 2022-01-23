@@ -10,7 +10,13 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
+
 const editForm = document.querySelector('.edit_form');
+const inputType = document.querySelector('.edit_form__input--type');
+const inputDistance = document.querySelector('.edit_form__input--distance');
+const inputDuration = document.querySelector('.edit_form__input--duration');
+const inputCadence = document.querySelector('.edit_form__input--cadence');
+const inputElevation = document.querySelector('.edit_form__input--elevation');
 
 class Workout {
   date = new Date();
@@ -263,8 +269,7 @@ class App {
 
     if (!data) return;
 
-    // console.log(data);
-
+    // make new Objects from data of localStorage
     data.forEach(work => {
       if (work.type === 'running')
         this.#workouts.push(
@@ -275,25 +280,6 @@ class App {
           new Cycling(work.distance, work.duration, work.coords, work.elevation)
         );
     });
-
-    // data
-    //   .filter(work => work.type === 'running')
-    //   .forEach(runningWork => {
-    //     this.#workouts.push(
-    //       new Running(
-    //         runningWork.distance,
-    //         runningWork.duration,
-    //         runningWork.coords,
-    //         runningWork.cadence
-    //       )
-    //     );
-    //   });
-
-    data.forEach(workout => {
-      console.log(workout.type);
-    });
-
-    // this.#workouts = data;
 
     this.#workouts.forEach(workout => {
       this._renderWorkoutList(workout);

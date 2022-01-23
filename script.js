@@ -83,6 +83,7 @@ class App {
 
     // EVENT HANDLERS
     inputType.addEventListener('change', this._toggleElevationFiled);
+    editInputType.addEventListener('change', this._toggleEditTypeFiled);
     form.addEventListener('submit', this._newWorkout.bind(this));
     editForm.addEventListener('submit', this._submitNewWorkout.bind(this));
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
@@ -126,6 +127,15 @@ class App {
   _toggleElevationFiled() {
     inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
     inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+  }
+
+  _toggleEditTypeFiled() {
+    editInputElevation
+      .closest('.form__row')
+      .classList.toggle('edit_form__row--hidden');
+    editInputCadence
+      .closest('.form__row')
+      .classList.toggle('edit_form__row--hidden');
   }
 
   _toggleElevationFiledEdit() {

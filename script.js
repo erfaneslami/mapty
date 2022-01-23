@@ -259,12 +259,44 @@ class App {
   }
 
   _getLocalStorage() {
-    const localWorkout = localStorage.getItem('workout');
-    if (!localWorkout) return;
-    this.#workouts = JSON.parse(localWorkout);
+    const data = JSON.parse(localStorage.getItem('workout'));
+
+    if (!data) return;
+
+    // console.log(data);
+
+    data.forEach(work => {
+      if (work.type === 'running')
+        this.#workouts.push(
+          new Running(work.distance, work.duration, work.coords, work.cadence)
+        );
+      if (work.type === 'cycling')
+        this.#workouts.push(
+          new Cycling(work.distance, work.duration, work.coords, work.elevation)
+        );
+    });
+
+    // data
+    //   .filter(work => work.type === 'running')
+    //   .forEach(runningWork => {
+    //     this.#workouts.push(
+    //       new Running(
+    //         runningWork.distance,
+    //         runningWork.duration,
+    //         runningWork.coords,
+    //         runningWork.cadence
+    //       )
+    //     );
+    //   });
+
+    data.forEach(workout => {
+      console.log(workout.type);
+    });
+
+    // this.#workouts = data;
+
     this.#workouts.forEach(workout => {
       this._renderWorkoutList(workout);
-      // this._renderWorkoutMarker(workout).bind(this);
     });
   }
 
@@ -282,6 +314,11 @@ class App {
         duration: 1,
       },
     });
+  }
+
+  reset() {
+    localStorage.removeItem('workout');
+    location.reload();
   }
 
   // _editWorkout(e) {

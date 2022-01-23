@@ -76,7 +76,7 @@ class App {
     inputType.addEventListener('change', this._toggleElevationFiled);
     form.addEventListener('submit', this._newWorkout.bind(this));
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
-    containerWorkouts.addEventListener('click', this._editWorkout.bind(this));
+    // containerWorkouts.addEventListener('click', this._editWorkout.bind(this));
   }
 
   _getPosition() {
@@ -284,33 +284,33 @@ class App {
     });
   }
 
-  _editWorkout(e) {
-    // delete selected workout
-    // alert (select on map)
-    //
-    if (!e.target.classList.contains('workout__edit')) return;
-    const workoutEl = e.target.closest('.workout');
-    console.log(workoutEl);
-    const selectedWorkout = this.#workouts.find(
-      work => work.id === workoutEl.dataset.id
-    );
+  // _editWorkout(e) {
+  //   // delete selected workout
+  //   // alert (select on map)
+  //   //
+  //   if (!e.target.classList.contains('workout__edit')) return;
+  //   const workoutEl = e.target.closest('.workout');
+  //   console.log(workoutEl);
+  //   const selectedWorkout = this.#workouts.find(
+  //     work => work.id === workoutEl.dataset.id
+  //   );
 
-    editForm.classList.remove('hidden');
-    inputDistance.focus();
+  //   editForm.classList.remove('hidden');
+  //   inputDistance.focus();
 
-    editForm.addEventListener('submit', e => {
-      e.preventDefault();
-      console.log(selectedWorkout);
-      selectedWorkout.duration = inputDuration.value;
-      selectedWorkout._calcPace();
+  //   editForm.addEventListener('submit', e => {
+  //     e.preventDefault();
+  //     console.log(selectedWorkout);
+  //     selectedWorkout.duration = inputDuration.value;
+  //     selectedWorkout._calcPace();
 
-      this.#workouts.forEach(work => {
-        this._renderWorkoutList(work);
-      });
+  //     this.#workouts.forEach(work => {
+  //       this._renderWorkoutList(work);
+  //     });
 
-      console.log(selectedWorkout.coords);
-    });
-  }
+  //     console.log(selectedWorkout.coords);
+  //   });
+  // }
 }
 
 const app = new App();

@@ -145,10 +145,15 @@ class App {
       .classList.add('edit_form__row--hidden');
   }
 
+  _formValidation(...inputs) {
+    const validInputs = inputs.every(inp => Number.isFinite(inp));
+    const allPositive = inputs.every(inp => inp > 0);
+    if (validInputs && allPositive) {
+      return true;
+    } else return false;
+  }
+
   _newWorkout(e) {
-    const validInputs = (...inputs) =>
-      inputs.every(inp => Number.isFinite(inp));
-    const allPositive = (...inputs) => inputs.every(inp => inp > 0);
     e.preventDefault();
     const type = inputType.value;
     const distance = +inputDistance.value;
@@ -161,10 +166,7 @@ class App {
       const cadence = +inputCadence.value;
 
       // validation inputs
-      if (
-        !validInputs(duration, distance, cadence) ||
-        !allPositive(duration, distance, cadence)
-      ) {
+      if (!this._formValidation(duration, distance, cadence)) {
         alert('wrong inputs');
         return;
       }
@@ -175,10 +177,7 @@ class App {
     if (type === 'cycling') {
       const elevation = +inputElevation.value;
 
-      if (
-        !validInputs(duration, distance, elevation) ||
-        !allPositive(duration, distance, elevation)
-      ) {
+      if (!this._formValidation(duration, distance, cadence)) {
         alert('wrong inputs');
         return;
       }
@@ -346,7 +345,9 @@ class App {
     console.log(selectedWorkout);
   }
 
-  _submitNewWorkout(e) {}
+  _submitNewWorkout(e) {
+    e.preventDefault();
+  }
 
   _showEditForm() {
     editForm.classList.remove('hidden');

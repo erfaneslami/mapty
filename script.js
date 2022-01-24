@@ -20,6 +20,8 @@ const editInputElevation = document.querySelector(
   '.edit_form__input--elevation'
 );
 
+const btnDeleteAll = document.querySelector('.btn_delete-all');
+
 class Workout {
   date = new Date();
   id = (Math.random() * 10 + ' ').slice(-8);
@@ -90,6 +92,7 @@ class App {
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
     containerWorkouts.addEventListener('click', this._editWorkout.bind(this));
     containerWorkouts.addEventListener('click', this._deleteWorkout.bind(this));
+    btnDeleteAll.addEventListener('click', this._deleteAll.bind(this));
   }
 
   _getPosition() {
@@ -407,13 +410,13 @@ class App {
 
     // Find the current el and delete
     let workEl;
-    const allWorkE = containerWorkouts.querySelectorAll('.workout');
     allWorkE.forEach(work => {
       if (work.dataset.id === id) {
         workEl = work;
       }
     });
     workEl.remove();
+    const allWorkE = containerWorkouts.querySelectorAll('.workout');
 
     this._hideEditForm();
     this._setLocalStorage();
@@ -467,6 +470,18 @@ class App {
     this.#workouts.splice(workoutIndex, 1); // remove workout object from list
     workoutEl.remove(); // remove the element
     this._setLocalStorage(); // save current workout list to the localStorage
+  }
+
+  _deleteAll() {
+    if (this.#workouts === []) return;
+    this.#marker.forEach(marker => marker.removeFrom(this.#map));
+
+    const allWorkE = containerWorkouts.querySelectorAll('.workout');
+    allWorkE.forEach(workE => workE.remove());
+
+    this.#workouts = [];
+
+    this._setLocalStorage();
   }
 }
 

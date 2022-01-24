@@ -55,6 +55,10 @@ a:visited {
   margin-bottom: 4rem;
 }
 
+.sort__input {
+  text-align: right;
+}
+
 .workouts {
   list-style: none;
   height: 77vh;

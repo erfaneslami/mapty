@@ -20,6 +20,7 @@ const editInputElevation = document.querySelector(
   '.edit_form__input--elevation'
 );
 
+const btnSort = document.querySelector('.sort__input_type');
 const btnDeleteAll = document.querySelector('.btn_delete-all');
 
 class Workout {
@@ -88,11 +89,11 @@ class App {
     inputType.addEventListener('change', this._toggleElevationFiled);
     editInputType.addEventListener('change', this._toggleEditTypeFiled);
     form.addEventListener('submit', this._newWorkout.bind(this));
-    // editForm.addEventListener('submit', this._submitNewWorkout.bind(this));
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
     containerWorkouts.addEventListener('click', this._editWorkout.bind(this));
     containerWorkouts.addEventListener('click', this._deleteWorkout.bind(this));
     btnDeleteAll.addEventListener('click', this._deleteAll.bind(this));
+    btnSort.addEventListener('change', this._sort.bind(this));
   }
 
   _getPosition() {
@@ -124,7 +125,6 @@ class App {
 
   _showForm(mapE) {
     this.#mapEvent = mapE;
-    console.log(mapE);
     form.classList.remove('hidden');
     inputDistance.focus();
   }
@@ -482,6 +482,28 @@ class App {
     this.#workouts = [];
 
     this._setLocalStorage();
+  }
+
+  _sort(e) {
+    console.log(btnSort.value);
+    if (btnSort.value === 'distance') {
+      // const distance = this.#workouts.map(work => work.distance);
+      // distance.sort((a, b) => a - b);
+
+      // this.#workouts.sort();
+
+      const test = this.#workouts
+        .slice()
+        .sort((a, b) => a.distance - b.distance);
+
+      const allWorkE = containerWorkouts.querySelectorAll('.workout');
+      allWorkE.forEach(workE => workE.remove());
+      test.forEach(work => this._renderWorkoutList(work));
+      // this.#workouts.map(work => work.distance).sort((a, b) => a - b);
+
+      // this.#workouts.filter((work, i) => work.distance === test[i]);
+      console.log(test);
+    }
   }
 }
 

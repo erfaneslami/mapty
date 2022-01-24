@@ -77,6 +77,7 @@ class App {
   #mapEvent;
   #workouts = [];
   #selectedWorkout;
+  #marker = [];
   constructor() {
     this._getPosition();
     this._getLocalStorage();
@@ -88,6 +89,7 @@ class App {
     // editForm.addEventListener('submit', this._submitNewWorkout.bind(this));
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
     containerWorkouts.addEventListener('click', this._editWorkout.bind(this));
+    containerWorkouts.addEventListener('click', this._deleteWorkout.bind(this));
   }
 
   _getPosition() {
@@ -208,21 +210,25 @@ class App {
   }
 
   _renderWorkoutMarker(workout) {
-    L.marker(workout.coords)
-      .addTo(this.#map)
-      .bindPopup(
-        L.popup({
-          maxWidth: 250,
-          minWidth: 100,
-          autoClose: false,
-          closeOnClick: false,
-          className: `${workout.type}-popup`,
-        })
-      )
-      .setPopupContent(
-        `${workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'} ${workout.description}`
-      )
-      .openPopup();
+    this.#marker.push(
+      L.marker(workout.coords, {
+        title: workout.id,
+      })
+        .addTo(this.#map)
+        .bindPopup(
+          L.popup({
+            maxWidth: 250,
+            minWidth: 100,
+            autoClose: false,
+            closeOnClick: false,
+            className: `${workout.type}-popup`,
+          })
+        )
+        .setPopupContent(
+          `${workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'} ${workout.description}`
+        )
+        .openPopup()
+    );
   }
 
   _renderWorkoutList(workout) {
@@ -345,15 +351,12 @@ class App {
 
     const workoutEl = e.target.closest('.workout');
 
-    console.log(workoutEl);
-
     this.#selectedWorkout = this.#workouts.find(
       work => work.id === workoutEl.dataset.id
     );
 
     this._showEditForm();
     this._showCurrentValues(this.#selectedWorkout);
-    console.log(this.#selectedWorkout);
 
     editForm.addEventListener('submit', this._submitNewWorkout.bind(this));
 
@@ -437,6 +440,36 @@ class App {
       this._toggleCadenceFiledEdit();
       editInputElevation.value = work.elevation;
     }
+  }
+
+  _deleteWorkout(e) {
+    if (!e.target.classList.contains('workout__delete')) return;
+    console.log(e.target);
+
+    const workoutEl = e.target.closest('.workout');
+
+    console.log(workoutEl);
+    const workout = this.#workouts.find(
+      work => work.id === workoutEl.dataset.id
+    );
+    const workoutIndex = this.#workouts.findIndex(
+      work => work.id === workoutEl.dataset.id
+    );
+
+    console.log(workout.coords);
+    console.log(this.#marker);
+    console.log(this.#marker.title);
+    // this.#marker.forEach(marker => console.log(marker.options.title));
+
+    const [marker] = this.#marker.filter(
+      marker => marker.options.title === workout.id
+    );
+
+    marker.removeFrom(this.#map);
+    this.#workouts.splice(workoutIndex, 1);
+    workoutEl.remove();
+    this._setLocalStorage();
+    // location.reload();
   }
 }
 

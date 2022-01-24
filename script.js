@@ -444,32 +444,29 @@ class App {
 
   _deleteWorkout(e) {
     if (!e.target.classList.contains('workout__delete')) return;
-    console.log(e.target);
 
+    // workout html Element
     const workoutEl = e.target.closest('.workout');
 
-    console.log(workoutEl);
+    // workout object
     const workout = this.#workouts.find(
       work => work.id === workoutEl.dataset.id
     );
+
+    // workout Index
     const workoutIndex = this.#workouts.findIndex(
       work => work.id === workoutEl.dataset.id
     );
 
-    console.log(workout.coords);
-    console.log(this.#marker);
-    console.log(this.#marker.title);
-    // this.#marker.forEach(marker => console.log(marker.options.title));
-
+    // find the marker which we want to delete
     const [marker] = this.#marker.filter(
       marker => marker.options.title === workout.id
     );
 
-    marker.removeFrom(this.#map);
-    this.#workouts.splice(workoutIndex, 1);
-    workoutEl.remove();
-    this._setLocalStorage();
-    // location.reload();
+    marker.removeFrom(this.#map); // delete the marker from map
+    this.#workouts.splice(workoutIndex, 1); // remove workout object from list
+    workoutEl.remove(); // remove the element
+    this._setLocalStorage(); // save current workout list to the localStorage
   }
 }
 

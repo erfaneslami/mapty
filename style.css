@@ -94,6 +94,10 @@ a:visited {
   justify-content: flex-end;
 }
 
+.workout__options span:hover {
+  text-decoration: underline;
+}
+
 .workout__title {
   font-size: 1.7rem;
   font-weight: 600;
@@ -184,6 +188,24 @@ a:visited {
 .form__btn,
 .edit_form__btn {
   display: none;
+}
+
+.btn_delete-all {
+  margin: 1rem 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 0.5rem 0.2rem;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--color-light--1);
+  color: var(--color-dark--1);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn_delete-all:hover {
+  color: var(--color-light--2);
 }
 
 .copyright {

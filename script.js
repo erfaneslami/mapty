@@ -487,23 +487,38 @@ class App {
   _sort(e) {
     console.log(btnSort.value);
     if (btnSort.value === 'distance') {
-      // const distance = this.#workouts.map(work => work.distance);
-      // distance.sort((a, b) => a - b);
-
-      // this.#workouts.sort();
-
-      const test = this.#workouts
+      const workouts = this.#workouts
         .slice()
         .sort((a, b) => a.distance - b.distance);
 
-      const allWorkE = containerWorkouts.querySelectorAll('.workout');
-      allWorkE.forEach(workE => workE.remove());
-      test.forEach(work => this._renderWorkoutList(work));
-      // this.#workouts.map(work => work.distance).sort((a, b) => a - b);
-
-      // this.#workouts.filter((work, i) => work.distance === test[i]);
-      console.log(test);
+      this._delAndReplace(workouts);
     }
+
+    if (btnSort.value === 'duration') {
+      const workouts = this.#workouts
+        .slice()
+        .sort((a, b) => a.duration - b.duration);
+
+      this._delAndReplace(workouts);
+    }
+
+    if (btnSort.value === 'type') {
+      const workouts = this.#workouts
+        .slice()
+        .sort((a, b) => (a.type > b.type ? 1 : -1));
+
+      this._delAndReplace(workouts);
+    }
+
+    if (btnSort.value === 'date') {
+      this._delAndReplace(this.#workouts);
+    }
+  }
+
+  _delAndReplace(workouts) {
+    const allWorkE = containerWorkouts.querySelectorAll('.workout');
+    allWorkE.forEach(workE => workE.remove());
+    workouts.forEach(work => this._renderWorkoutList(work));
   }
 }
 

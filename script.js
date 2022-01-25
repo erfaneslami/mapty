@@ -111,7 +111,7 @@ class App {
     const { latitude, longitude } = position.coords;
     const coords = [latitude, longitude];
 
-    this.#map = L.map('map').setView(coords, 13);
+    this.#map = L.map('map', { drawControl: true }).setView(coords, 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution:
@@ -468,6 +468,7 @@ class App {
       marker => marker.options.title === workout.id
     );
 
+    this.#marker.splice(this.#marker.indexOf(marker), 1);
     marker.removeFrom(this.#map); // delete the marker from map
     this.#workouts.splice(workoutIndex, 1); // remove workout object from list
     workoutEl.remove(); // remove the element
@@ -482,7 +483,7 @@ class App {
     allWorkE.forEach(workE => workE.remove());
 
     this.#workouts = [];
-
+    this.#marker = [];
     this._setLocalStorage();
   }
 

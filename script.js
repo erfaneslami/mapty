@@ -22,6 +22,7 @@ const editInputElevation = document.querySelector(
 
 const btnSort = document.querySelector('.sort__input_type');
 const btnDeleteAll = document.querySelector('.btn_delete-all');
+const btnShowAll = document.querySelector('.btn_show-all');
 
 class Workout {
   date = new Date();
@@ -94,6 +95,7 @@ class App {
     containerWorkouts.addEventListener('click', this._deleteWorkout.bind(this));
     btnDeleteAll.addEventListener('click', this._deleteAll.bind(this));
     btnSort.addEventListener('change', this._sort.bind(this));
+    btnShowAll.addEventListener('click', this._showAllMarkers.bind(this));
   }
 
   _getPosition() {
@@ -484,7 +486,7 @@ class App {
     this._setLocalStorage();
   }
 
-  _sort(e) {
+  _sort() {
     console.log(btnSort.value);
     if (btnSort.value === 'distance') {
       const workouts = this.#workouts
@@ -519,6 +521,11 @@ class App {
     const allWorkE = containerWorkouts.querySelectorAll('.workout');
     allWorkE.forEach(workE => workE.remove());
     workouts.forEach(work => this._renderWorkoutList(work));
+  }
+
+  _showAllMarkers() {
+    const group = L.featureGroup(this.#marker);
+    this.#map.fitBounds(group.getBounds());
   }
 }
 

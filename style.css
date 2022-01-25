@@ -59,6 +59,10 @@ a:visited {
   text-align: right;
 }
 
+.btn_show-all {
+  display: inline-block;
+}
+
 .workouts {
   list-style: none;
   height: 77vh;
@@ -194,7 +198,8 @@ a:visited {
   display: none;
 }
 
-.btn_delete-all {
+.btn_delete-all,
+.btn_show-all {
   margin: 1rem 0;
   font-size: 1.4rem;
   font-weight: 600;
@@ -208,7 +213,8 @@ a:visited {
   transition: all 0.3s;
 }
 
-.btn_delete-all:hover {
+.btn_delete-all:hover,
+.btn_show-all:hover {
   color: var(--color-light--2);
 }
 
